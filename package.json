@@ -1,0 +1,30 @@
+{
+  "name": "smartedu",
+  "version": "1.0.0",
+  "description": "Education Portal",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ozgekrby/SmartEdu.git"
+  },
+  "keywords": [
+    "education",
+    "portal",
+    "node.js"
+  ],
+  "author": "Özge Karabay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ozgekrby/SmartEdu/issues"
+  },
+  "homepage": "https://github.com/ozgekrby/SmartEdu#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
