@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const pageRouter = require('./routes/pageRouter');
 const courseRouter = require('./routes/courseRouter');
 const categoryRouter = require('./routes/categoryRouter');
+const userRouter = require('./routes/userRouter');
 const bodyParser = require('body-parser');
 const app = express();
 
@@ -24,6 +25,7 @@ mongoose.connect('mongodb://127.0.0.1/smartedu-database').then(() => {
 app.use('/', pageRouter);
 app.use('/courses', courseRouter);
 app.use('/categories', categoryRouter);
+app.use('/users', userRouter);
 
 const port = 3000;
 
