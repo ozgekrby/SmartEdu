@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const session = require('express-session')
 const bcrypt = require('bcrypt');
 
 exports.createUser = async (req, res) => {
@@ -31,9 +32,9 @@ exports.loginUser = async (req, res) => {
     if (!isPasswordCorrect) {
       return res.status(401).json({ status: 'fail', message: 'Invalid credentials' });
     }
-
+    req.session.userID=user._id;
     // USER SESSION LOGIC
-    res.status(200).json({ status: 'success', message: 'YOU ARE LOGGED IN' });
+    res.status(200).redirect("/");
   } catch (error) {
     res.status(400).json({
       status: 'fail',
