@@ -1,12 +1,9 @@
 const User = require('../models/User');
-const session = require('express-session')
 const bcrypt = require('bcrypt');
 
 exports.createUser = async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10); // Şifreyi hash'leme
-    const user = await User.create({ ...req.body, password: hashedPassword }); // Şifreyi hash'lenmiş olarak kaydetme
-
+    const user = await User.create(req.body); 
     res.status(201).json({
       status: 'success',
       user,
@@ -32,9 +29,8 @@ exports.loginUser = async (req, res) => {
     if (!isPasswordCorrect) {
       return res.status(401).json({ status: 'fail', message: 'Invalid credentials' });
     }
-    req.session.userID=user._id;
-    // USER SESSION LOGIC
-    res.status(200).redirect("/users/dashboard");
+    req.session.userID = user._id;
+    res.status(200).redirect('/users/dashboard');
   } catch (error) {
     res.status(400).json({
       status: 'fail',
@@ -44,15 +40,25 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.logoutUser = (req, res) => {
-  req.session.destroy(()=> {
+  req.session.destroy(() => {
     res.redirect('/');
-  })
-}
+  });
+};
 
 exports.getDashboardPage = async (req, res) => {
-  const user = await User.findOne({_id:req.session.userID})
-  res.status(200).render('dashboard', {
-    page_name: 'dashboard',
-    user
-  });
-}; 
+  try {
+    const user = await User.findById(req.session.userID);
+    if (!user) {
+      return res.redirect('/users/login');
+    }
+    res.status(200).render('dashboard', {
+      page_name: 'dashboard',
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'fail',
+      error: error.message,
+    });
+  }
+};
