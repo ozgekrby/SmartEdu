@@ -6,6 +6,7 @@ const categoryRouter = require('./routes/categoryRouter');
 const userRouter = require('./routes/userRouter');
 const bodyParser = require('body-parser');
 const session = require('express-session')
+const MongoStore = require('connect-mongo');
 const app = express();
 
 //TEMPLATE ENGINE
@@ -22,6 +23,7 @@ app.use(session({
   secret: 'my_keyboard_cat',
   resave: false,
   saveUninitialized: true,
+  store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1/smartedu-database' })
 }))
 app.use('*', (req, res, next) => {
   userIN = req.session.userID;

@@ -42,3 +42,15 @@ exports.loginUser = async (req, res) => {
     });
   }
 };
+
+exports.logoutUser = (req, res) => {
+  req.session.destroy(()=> {
+    res.redirect('/');
+  })
+}
+
+exports.getDashboardPage = (req, res) => {
+  res.status(200).render('dashboard', {
+    page_name: 'dashboard',
+  });
+};
