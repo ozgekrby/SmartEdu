@@ -57,6 +57,8 @@ exports.getDashboardPage = async (req, res) => {
     const user = await User.findOne({_id:req.session.userID}).populate('courses');
     const categories = await Category.find();
     const courses = await Course.find({user:req.session.userID})
+    const users = await User.find();
+    console.log(users.countDocument);
     if (!user) {
       return res.redirect('/users/login');
     }
@@ -64,12 +66,26 @@ exports.getDashboardPage = async (req, res) => {
       page_name: 'dashboard',
       user,
       categories,
-      courses
+      courses,
+      users,
     });
   } catch (error) {
     res.status(500).json({
       status: 'fail',
       error: error.message,
+    });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {    
+    await User.findByIdAndDelete(req.params.id)
+    await Course.deleteMany({user:req.params.id})
+    res.status(200).redirect('/users/dashboard');
+  } catch (error) {
+    res.status(400).json({
+      status: 'fail',
+      error,
     });
   }
 };

@@ -4,6 +4,7 @@ const {
   loginUser,
   getDashboardPage,
   logoutUser,
+  deleteUser,
 } = require('../controllers/authControllers');
 const authmiddleware = require('../middlewares/authMiddleware');
 const { body } = require('express-validator');
@@ -30,4 +31,5 @@ router.route('/signup').post(
 router.route('/login').post(loginUser);
 router.route('/logout').get(logoutUser);
 router.route('/dashboard').get(authmiddleware, getDashboardPage);
+router.route('/:id').delete(deleteUser);
 module.exports = router;
