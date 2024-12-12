@@ -7,6 +7,7 @@ const userRouter = require('./routes/userRouter');
 const bodyParser = require('body-parser');
 const session = require('express-session')
 const MongoStore = require('connect-mongo');
+const flash = require('connect-flash');
 const app = express();
 
 //TEMPLATE ENGINE
@@ -34,6 +35,12 @@ app.use('*', (req, res, next) => {
 mongoose.connect('mongodb://127.0.0.1/smartedu-database').then(() => {
   console.log('Connected DB');
 });
+
+app.use(flash());
+app.use((req, res, next)=> {
+  res.locals.flashMessages = req.flash();
+  next();
+})
 
 //Routes
 app.use('/', pageRouter);

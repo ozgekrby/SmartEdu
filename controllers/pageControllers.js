@@ -63,10 +63,10 @@ exports.sendEmail = async (req, res) => {
 
     console.log('Message sent: %s', info.messageId);
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
+    req.flash("success", "We Received your message succesfully");
     res.status(200).redirect('contact');
   } catch (error) {
-    console.error('Error while sending email:', error);
-    res.status(500).json({ message: 'Email sending failed', error });
+    req.flash("error", `Something happened!`);
+    res.status(200).redirect('contact');
   }
 };
