@@ -9,6 +9,10 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const flash = require('connect-flash');
 const methodOverride = require('method-override');
+const dotenv = require('dotenv');
+
+dotenv.config(); 
+
 const app = express();
 
 //TEMPLATE ENGINE
@@ -27,7 +31,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl: 'mongodb://127.0.0.1/smartedu-database',
+      mongoUrl: process.env.MONGO_URL, 
     }),
   })
 );
@@ -45,9 +49,9 @@ app.use(
     methods: ['POST', 'GET'],
   })
 );
-//DB Connection
 
-mongoose.connect('mongodb://127.0.0.1/smartedu-database')
+//DB Connection
+mongoose.connect(process.env.MONGO_URL)
   .then(() => {
     console.log('Connected to DB');
   })
@@ -61,7 +65,7 @@ app.use('/courses', courseRouter);
 app.use('/categories', categoryRouter);
 app.use('/users', userRouter);
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
   console.log(`App started on port ${port}`);
